@@ -1,0 +1,1 @@
+ABRIR en terminal dentro de la carpeta chat en vivo y ponga este comando "npm run dev" para que inicie el chat en vivo
