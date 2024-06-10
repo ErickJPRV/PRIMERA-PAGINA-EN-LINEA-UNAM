@@ -20,7 +20,7 @@
             <a class="nav-link active" aria-current="page" href="/PAGINA EN LINEA/CRUD/index.php">Venta de articulos</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="http://localhost:3000">Chat en vivo</a>
+            <a class="nav-link" href="CHAT EN VIVO/Interfaz/Ingresar.php">Chat en vivo</a>
           </li>
         </ul>
         <form class="d-flex">

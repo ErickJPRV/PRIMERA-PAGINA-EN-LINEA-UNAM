@@ -1,10 +1,55 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chat en vivo</title>
+  <script type="module">
+    import {io} from 'https://cdn.socket.io/4.3.2/socket.io.esm.min.js'
+
+    const getUserId = () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get('userid');
+    };
+
+    const userid = getUserId();
+    const socket = io({
+      auth: {
+        userid: userid,
+        serverOffset: 0
+      }
+    });
+    const form=document.getElementById('form')
+    const input= document.getElementById('input')
+    const messages=document.getElementById('messages')
+
+
+    socket.on('chat message', (msg, serverOffset, username,fecha) => {
+      const [fechao, hora] = fecha.split('T')
+      const hora1 = hora.slice(0, -5);
+      const item = `<li>
+        <p>${username} &nbsp ${fechao} &nbsp ${hora1}<p>
+        <small>${msg}</small>
+      </li>`;
+      messages.insertAdjacentHTML('beforeend', item);
+      socket.auth.serverOffset = serverOffset;
+    });
+    
+//se crea una constante con el mensaje y codigo html para insertarlo
+//se inserta en el html dentro de los messages
+//con esto el usuario sabra donde se ha quedado con el ultimo mensaje
+
+    messages.scrollTop =messages.scrollHeight
+    form.addEventListener('submit',(e)=>{
+      e.preventDefault()//evitamos el comportamiento que le da html al submit para que realize otro comportamiento que queremos
+
+      if(input.value){//si el input(boton) prende aca se realizara la accion
+        socket.emit('chat message',input.value) //se crea el evento chat message y se envia al socket
+        input.value=''
+      }
+    })
+  </script>
   <style>
     *,
     *::before,
@@ -97,7 +142,7 @@
       <button type="submit">Enviar</button>
     </form>
   </section>
-  <script src="/socket.io/socket.io.js"></script>
+  <!--
   <script>
     let socket=io()
     const form = document.querySelector('form')
@@ -119,7 +164,7 @@
       window.scrollTo(0, document.body.scrollHeight);
     });
     
-  </script>
+  </script>-->
 </body>
 
 </html>
